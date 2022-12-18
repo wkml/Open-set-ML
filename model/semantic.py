@@ -15,7 +15,8 @@ class semantic(nn.Module):
         self.fc_3 = nn.Linear(self.intermediary_dim, self.intermediary_dim)
         self.fc_a = nn.Linear(self.intermediary_dim, 1)
 
-    def forward(self,img_feature_map, word_features):
+    def forward(self,img_feature_map, word_features, num_classes=80):
+        self.num_classes = num_classes
         batch_size = img_feature_map.size()[0]
         convsize = img_feature_map.size()[3]
 

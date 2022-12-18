@@ -13,7 +13,7 @@ sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 
 class COCO2014(data.Dataset):
     def __init__(self, mode,
-                 image_dir, anno_path, labels_path,
+                 image_dir, anno_path,
                  input_transform=None):
 
         assert mode in ('train', 'val')
@@ -35,7 +35,8 @@ class COCO2014(data.Dataset):
             img_id = self.ids[i]
             ann_ids = self.coco.getAnnIds(imgIds=img_id)
             target = self.coco.loadAnns(ann_ids)
-            self.labels.append(getLabelVector(getCategoryList(target), self.category_map))
+            categories = getCategoryList(target)
+            self.labels.append(getLabelVector(categories, self.category_map, mode))
         self.labels = np.array(self.labels)
         self.labels[self.labels < 1] = 0
 
@@ -62,12 +63,21 @@ def getCategoryList(item):
     return list(categories)
 
 
-def getLabelVector(categories, category_map):
-    label = np.zeros(80)
-    label.fill(-1)
-    for c in categories:
-        label[category_map[str(c)] - 1] = 1.0
-    return label
+def getLabelVector(categories, category_map, mode='train'):
+    if mode == 'train':
+        label = np.zeros(60)
+        label.fill(-1)
+        for c in categories:
+            index = category_map[str(c)] - 1
+            if index < 60:
+                label[index] = 1.0
+        return label
+    else:
+        label = np.zeros(80)
+        label.fill(-1)
+        for c in categories:
+            label[category_map[str(c)] - 1] = 1.0
+        return label
 
 
 
