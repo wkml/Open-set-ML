@@ -1,7 +1,49 @@
+import json
 import math
 import numpy as np
 
 import torch
+
+def average_precision(output, target):
+    epsilon = 1e-8
+
+    # sort examples
+    # 从大到小排序
+    indices = output.argsort()[::-1]
+    # Computes prec@i
+    total_count_ = np.cumsum(np.ones((len(output), 1)))
+
+    target_ = target[indices]
+    ind = target_ == 1
+    pos_count_ = np.cumsum(ind)
+    total = pos_count_[-1]
+    pos_count_[np.logical_not(ind)] = 0
+    pp = pos_count_ / total_count_
+    precision_at_i_ = np.sum(pp)
+    precision_at_i = precision_at_i_ / (total + epsilon)
+
+    return precision_at_i
+
+
+def mAP(targs, preds):
+    """Returns the model's average precision for each class
+    Return:
+        ap (FloatTensor): 1xK tensor, with avg precision for each class k
+    """
+
+    # print('shape', targs.shape)
+    # print(preds.shape)
+    if np.size(preds) == 0:
+        return 0
+    ap = np.zeros((preds.shape[1]))
+    # compute average precision for each class
+    for k in range(preds.shape[1]):
+        # sort scores
+        scores = preds[:, k]
+        targets = targs[:, k]
+        # compute average precision
+        ap[k] = average_precision(scores, targets)
+    return 100 * ap.mean()
 
 def ComputeAP_VOC(recall, precision):
     """Compute AP with VOC standard"""
@@ -202,10 +244,10 @@ class AveragePrecisionMeter(object):
             totalCount+=1
 
             if target[index] == 1:
-                posCount+=1
-                avgPrecision+= posCount/totalCount
+                posCount += 1
+                avgPrecision += posCount / totalCount + 1e-8
 
-        return avgPrecision/posCount
+        return avgPrecision / posCount
 
     def overall(self):
 
@@ -258,6 +300,21 @@ class AveragePrecisionMeter(object):
         CF1 = (2 * CP * CR) / (CP + CR)
 
         return OP, OR, OF1, CP, CR, CF1
+    
+    def compute_ap(self, classnames):
+        all_ap = self.value().numpy()
+        base_ap = all_ap[:60]
+        novel_ap = all_ap[60:]
+        base_mAP = base_ap.mean()
+        novel_mAP = novel_ap.mean()
+        print('base mAP:', base_mAP)
+        print('novel mAP:', novel_mAP)
+        print('AP for each class:', all_ap)
+        all_ap = list(all_ap)
+        ap_dict = {classname : ap for classname, ap in zip(classnames, all_ap)}
+        with open('ap_dict.txt', 'w') as f:
+            f.write(str(ap_dict))
+        return base_mAP, novel_mAP
 
 
 class AverageMeter(object):

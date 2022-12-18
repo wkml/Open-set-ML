@@ -1,7 +1,5 @@
 import torch
 import torch.nn as nn
-import numpy as np
-import torch.nn.functional as F
 from utils.checkpoint import load_clip_to_cpu
 from .semantic import semantic
 from clip import clip
@@ -28,11 +26,12 @@ class CLIP_SD(nn.Module):
     def forward(self, image, train=True):
         image_features = self.clip_model.encode_image(image.type(self.dtype))       #[bs, 2048, H, W]
         
-        text_features = self.text_features
         # SD
         if train:
-            sd_features = self.word_semantic(image_features, text_features, 60)    # [bs, 80, 512]
+            text_features = self.text_features
+            sd_features = self.word_semantic(image_features, text_features[:60], 60)    # [bs, 80, 512]
         else:
+            text_features = self.text_features
             sd_features = self.word_semantic(image_features, text_features, 80)
 
         output = self.classifiers(sd_features)
@@ -42,8 +41,7 @@ class CLIP_SD(nn.Module):
     def get_text_features(self, classnames):
         temp = "a photo of a {}."
         prompts = [temp.format(c.replace("_", " ")) for c in classnames]
-        prompts = torch.cat([clip.tokenize(p).cpu() for p in prompts])
-        with torch.no_grad():
-            text_features = self.clip_model.encode_text(prompts)
-        return text_features
+        prompts = torch.cat([clip.tokenize(p) for p in prompts])
+        text_features = self.clip_model.encode_text(prompts)
+        return nn.Parameter(text_features, requires_grad=False)
     

@@ -67,17 +67,6 @@ def main():
         p.requires_grad = False
 
     criterion = nn.BCEWithLogitsLoss(reduce=True, size_average=True).cuda()
-    # optimizer = torch.optim.Adam(filter(lambda p : p.requires_grad, model.parameters()), lr=args.lr)
-    # scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=args.step_epoch, gamma=0.1)
-    # criterion = AsymmetricLoss(margin=0.9, reduce=True, size_average=True).cuda()
-    optimizer = torch.optim.SGD(filter(lambda p : p.requires_grad, model.parameters()), 
-                                lr=args.lr,
-                                momentum=args.momentum, 
-                                weight_decay=args.weight_decay,
-                                nesterov=False)
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, float(args.epochs))
-    scheduler.last_epoch = 1
-    scheduler = ConstantWarmupScheduler(optimizer, scheduler, 1, 1e-5)
 
     if args.resume:
         if os.path.isfile(args.resume):
@@ -103,14 +92,11 @@ def main():
 
     for epoch in range(args.start_epoch,args.epochs):
         # model train mode
-        train(train_loader, model, criterion, optimizer, epoch, args, writer)
-
         # evaluate on validation set
         with torch.no_grad():
             # model eval mode
             mAP = validate(test_loader, model, criterion, args)
         
-        scheduler.step()
         writer.add_scalar('mAP', mAP, epoch)
         
         # remember best prec@1 and save checkpoint
@@ -127,44 +113,7 @@ def main():
             logger.info('[Best] [Epoch {0}]: Best mAP is {1:.3f}'.format(epoch, best_prec))
             
     writer.close()
-
-def train(train_loader, model, criterion, optimizer, epoch, args, writer):
-    batch_time = AverageMeter()
-    data_time = AverageMeter()
-    losses = AverageMeter()
     
-    model.train()
-    end = time.time()
-    model.clip_model.eval()
-    for i, (input, target) in enumerate(train_loader):
-        # measure data loading time
-        data_time.update(time.time() - end)
-        input, target = input.cuda(), target.float().cuda()
-
-        # compute output
-        output = model(input)
-
-        loss = criterion(output, target)
-
-        losses.update(loss.data, input.size(0))
-
-        # compute gradient and do SGD step
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
- 
-        # measure elapsed time
-        batch_time.update(time.time() - end)
-        end = time.time()
-
-        if i % args.print_freq == 0:
-            logger.info('Epoch: [{0}][{1}/{2}]\t'
-                        'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
-                        'Loss {loss.val:.4f} ({loss.avg:.4f})'.format(
-                         epoch, i, len(train_loader), batch_time=batch_time,
-                         loss=losses))
-    writer.add_scalar('Loss', losses.avg, epoch)
-
 def validate(val_loader, model, criterion, args):
     apMeter = AveragePrecisionMeter()
     pred, losses, batch_time = [], AverageMeter(), AverageMeter()

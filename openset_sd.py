@@ -12,7 +12,7 @@ import torch.optim.lr_scheduler as lr_scheduler
 
 from utils.transforms import get_train_test_set
 from utils.metrics import AverageMeter, AveragePrecisionMeter, Compute_mAP_VOC2012
-from model.clip_base_sd import CLIP_SD
+from model.openset_sd import CLIP_SD
 from utils.checkpoint import save_checkpoint
 
 from tensorboardX import SummaryWriter
@@ -21,7 +21,7 @@ from config import arg_parse, logger, show_args
 
 global best_prec
 best_prec = 0
-
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def main():
     global best_prec
@@ -53,19 +53,19 @@ def main():
     test_label = args.test_label
     train_loader, test_loader = get_train_test_set(train_data_dir,test_data_dir,train_list,test_list,train_label, test_label,args)
     with open(args.category_file, 'r') as load_category:
-        category_map = json.load(load_category)
+        classnames = json.load(load_category)
     logger.info("==> Done!\n")
 
     # load the network
     logger.info("==> Loading the network ...")
 
     model = CLIP_SD(args=args,
-                    classname=category_map,
+                    classnames=classnames,
                     image_feature_dim=2048,
                     num_classes=args.num_classes,
                     word_feature_dim=512,
                     )
-    model.cuda()
+    model.to(device)
 
     for p in model.parameters():
         p.requires_grad = False
@@ -74,7 +74,7 @@ def main():
     for p in model.classifiers.parameters():
         p.requires_grad = True
 
-    criterion = nn.BCEWithLogitsLoss(reduce=True, size_average=True).cuda()
+    criterion = nn.BCEWithLogitsLoss(reduce=True, size_average=True).to(device)
     optimizer = torch.optim.Adam(filter(lambda p : p.requires_grad, model.parameters()), lr=args.lr)
     scheduler = lr_scheduler.StepLR(optimizer, step_size=args.step_epoch, gamma=0.1)
 
@@ -138,10 +138,10 @@ def train(train_loader, model, criterion, optimizer, epoch, args, writer):
     for i, (input, target) in enumerate(train_loader):
         # measure data loading time
         data_time.update(time.time() - end)
-        input, target = input.cuda(), target.float().cuda()
+        input, target = input.to(device), target.float().to(device)
 
         # compute output
-        output = model(input)
+        output = model(input, train=True)
 
         loss = criterion(output, target)
 
@@ -173,12 +173,9 @@ def validate(val_loader, model, criterion, args):
     model.eval()
     end = time.time()
     for i, (input, target) in enumerate(val_loader):
-        input, target = input.cuda(), target.float().cuda()
+        input, target = input.to(device), target.float().to(device)
 
-        output = model(input)
-
-        # print("output:",output[0])
-        # print("target:",target[0])
+        output = model(input, train=False)
 
         loss = criterion(output, target)
         losses.update(loss.data, input.size(0))
@@ -207,6 +204,12 @@ def validate(val_loader, model, criterion, args):
     OP, OR, OF1, CP, CR, CF1 = apMeter.overall()
     OP_K, OR_K, OF1_K, CP_K, CR_K, CF1_K = apMeter.overall_topk(3)
 
+    with open(args.category_file, 'r') as load_category:
+        classnames = json.load(load_category)
+    base_mAP, novel_mAP = apMeter.compute_ap(classnames)
+
+    logger.info("base_mAP:", base_mAP)
+    logger.info("novel_mAP:", novel_mAP)
     logger.info('[Test] mAP: {mAP:.3f}, averageAP: {averageAP:.3f}\n'
                 '\t\t\t\t\t(Compute with all label) OP: {OP:.3f}, OR: {OR:.3f}, OF1: {OF1:.3f}, CP: {CP:.3f}, CR: {CR:.3f}, CF1:{CF1:.3f}\n'
                 '\t\t\t\t\t(Compute with top-3 label) OP: {OP_K:.3f}, OR: {OR_K:.3f}, OF1: {OF1_K:.3f}, CP: {CP_K:.3f}, CR: {CR_K:.3f}, CF1: {CF1_K:.3f}'.format(

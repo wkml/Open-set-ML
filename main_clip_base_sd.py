@@ -60,7 +60,7 @@ def main():
     logger.info("==> Loading the network ...")
 
     model = CLIP_SD(args=args,
-                    classname=category_map,
+                    classnames=category_map,
                     image_feature_dim=2048,
                     num_classes=args.num_classes,
                     word_feature_dim=512,

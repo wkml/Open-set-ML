@@ -27,8 +27,7 @@ class ZSCLIP(nn.Module):
     def get_text_features(self, classnames):
         temp = "a photo of a {}."
         prompts = [temp.format(c.replace("_", " ")) for c in classnames]
-        prompts = torch.cat([clip.tokenize(p).cpu() for p in prompts])
-        with torch.no_grad():
-            text_features = self.clip_model.encode_text(prompts)
-        return text_features
+        prompts = torch.cat([clip.tokenize(p) for p in prompts])
+        text_features = self.clip_model.encode_text(prompts)
+        return nn.Parameter(text_features, requires_grad=False)
     
