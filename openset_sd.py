@@ -51,7 +51,7 @@ def main():
     test_list = args.test_list
     train_label = args.train_label
     test_label = args.test_label
-    train_loader, test_loader = get_train_test_set(train_data_dir,test_data_dir,train_list,test_list,train_label, test_label,args)
+    train_loader, test_loader = get_train_test_set(train_data_dir,test_data_dir,train_list,test_list,train_label, test_label, args)
     with open(args.category_file, 'r') as load_category:
         classnames = json.load(load_category)
     logger.info("==> Done!\n")
@@ -208,8 +208,8 @@ def validate(val_loader, model, criterion, args):
         classnames = json.load(load_category)
     base_mAP, novel_mAP = apMeter.compute_ap(classnames)
 
-    logger.info("base_mAP:", base_mAP)
-    logger.info("novel_mAP:", novel_mAP)
+    logger.info("base_mAP:", base_mAP[0])
+    logger.info("novel_mAP:", novel_mAP[0])
     logger.info('[Test] mAP: {mAP:.3f}, averageAP: {averageAP:.3f}\n'
                 '\t\t\t\t\t(Compute with all label) OP: {OP:.3f}, OR: {OR:.3f}, OF1: {OF1:.3f}, CP: {CP:.3f}, CR: {CR:.3f}, CF1:{CF1:.3f}\n'
                 '\t\t\t\t\t(Compute with top-3 label) OP: {OP_K:.3f}, OR: {OR_K:.3f}, OF1: {OF1_K:.3f}, CP: {CP_K:.3f}, CR: {CR_K:.3f}, CF1: {CF1_K:.3f}'.format(

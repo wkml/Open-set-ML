@@ -307,14 +307,9 @@ class AveragePrecisionMeter(object):
         novel_ap = all_ap[60:]
         base_mAP = base_ap.mean()
         novel_mAP = novel_ap.mean()
-        print('base mAP:', base_mAP)
-        print('novel mAP:', novel_mAP)
-        print('AP for each class:', all_ap)
         all_ap = list(all_ap)
         ap_dict = {classname : ap for classname, ap in zip(classnames, all_ap)}
-        with open('ap_dict.txt', 'w') as f:
-            f.write(str(ap_dict))
-        return base_mAP, novel_mAP
+        return base_mAP, novel_mAP, ap_dict
 
 
 class AverageMeter(object):

@@ -16,12 +16,11 @@ class CLIP_SD(nn.Module):
         self.image_feature_dim = image_feature_dim
         self.dtype = self.clip_model.dtype
         self.text_features = self.get_text_features(classnames)
-        self.word_semantic = semantic(num_classes= self.num_classes,
+        self.word_semantic = semantic(num_classes=80,
                                       image_feature_dim = self.image_feature_dim,
                                       word_feature_dim=self.word_feature_dim)
 
         self.classifiers = Element_Wise_Layer(1, self.image_feature_dim)
-
 
     def forward(self, image, train=True):
         image_features = self.clip_model.encode_image(image.type(self.dtype))       #[bs, 2048, H, W]

@@ -16,7 +16,7 @@ class COCO2014(data.Dataset):
                  image_dir, anno_path,
                  input_transform=None):
 
-        assert mode in ('train', 'val')
+        assert mode in ('train', 'val', 'openset')
 
         self.mode = mode
         self.input_transform = input_transform
@@ -63,8 +63,8 @@ def getCategoryList(item):
     return list(categories)
 
 
-def getLabelVector(categories, category_map, mode='train'):
-    if mode == 'train':
+def getLabelVector(categories, category_map, mode='openset'):
+    if mode == 'openset':
         label = np.zeros(60)
         label.fill(-1)
         for c in categories:

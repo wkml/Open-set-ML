@@ -83,5 +83,6 @@ def arg_parse():
                         help='class special context')
     parser.add_argument('--class_token_position', default="end",
                         help='position of context')
+    parser.add_argument('--openset', action='store_true', default=False, help='if train on openset mode')
     args = parser.parse_args()
     return args

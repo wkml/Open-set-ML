@@ -1,0 +1,91 @@
+2022-12-20 00:33:56,506 INFO     ==========================================
+2022-12-20 00:33:56,515 INFO     ==========       CONFIG      =============
+2022-12-20 00:33:56,516 INFO     ==========================================
+2022-12-20 00:33:56,516 INFO     dataset: COCO
+2022-12-20 00:33:56,516 INFO     train_data: /data/public/coco2014/train2014
+2022-12-20 00:33:56,516 INFO     test_data: /data/public/coco2014/val2014
+2022-12-20 00:33:56,516 INFO     train_list: /data/public/coco2014/annotations/instances_train2014.json
+2022-12-20 00:33:56,516 INFO     test_list: /data/public/coco2014/annotations/instances_val2014.json
+2022-12-20 00:33:56,516 INFO     train_label: ./data/coco/train_label_vectors.npy
+2022-12-20 00:33:56,516 INFO     graph_file: ./data/coco/prob_train.npy
+2022-12-20 00:33:56,516 INFO     word_file: ./data/coco/vectors.npy
+2022-12-20 00:33:56,516 INFO     test_label: ./data/coco/val_label_vectors.npy
+2022-12-20 00:33:56,516 INFO     print_freq: 1000
+2022-12-20 00:33:56,516 INFO     workers: 5
+2022-12-20 00:33:56,516 INFO     epochs: 20
+2022-12-20 00:33:56,516 INFO     start_epoch: 0
+2022-12-20 00:33:56,516 INFO     step_epoch: 10
+2022-12-20 00:33:56,516 INFO     batch_size: 16
+2022-12-20 00:33:56,516 INFO     lr: 0.0003
+2022-12-20 00:33:56,516 INFO     momentum: 0.9
+2022-12-20 00:33:56,516 INFO     weight_decay: 0.0
+2022-12-20 00:33:56,516 INFO     resume: 
+2022-12-20 00:33:56,516 INFO     crop_size: 448
+2022-12-20 00:33:56,517 INFO     scale_size: 512
+2022-12-20 00:33:56,517 INFO     evaluate: False
+2022-12-20 00:33:56,517 INFO     post: SD-CLIP_BASE-COCO-exp5.0-lr3e-4-bs16
+2022-12-20 00:33:56,517 INFO     num_classes: 80
+2022-12-20 00:33:56,517 INFO     backbone_name: RN101
+2022-12-20 00:33:56,517 INFO     category_file: ./data/coco/category_name.json
+2022-12-20 00:33:56,517 INFO     n_ctx: 16
+2022-12-20 00:33:56,517 INFO     ctx_init: False
+2022-12-20 00:33:56,517 INFO     csc: False
+2022-12-20 00:33:56,517 INFO     class_token_position: end
+2022-12-20 00:33:56,517 INFO     openset: False
+2022-12-20 00:33:56,517 INFO     ==========================================
+2022-12-20 00:33:56,517 INFO     ===========        END        ============
+2022-12-20 00:33:56,517 INFO     ==========================================
+2022-12-20 00:33:56,517 INFO     
+
+2022-12-20 00:33:56,517 INFO     ==> Creating dataloader...
+You will perform multi-scale on images for scale 640
+loading annotations into memory...
+Done (t=11.27s)
+creating index...
+index created!
+loading annotations into memory...
+Done (t=6.00s)
+creating index...
+index created!
+2022-12-20 00:34:16,416 INFO     ==> Done!
+
+2022-12-20 00:34:16,418 INFO     ==> Loading the network ...
+2022-12-20 00:34:24,881 INFO     ==> Done!
+
+2022-12-20 00:34:24,881 INFO     Run Experiment...
+2022-12-20 00:34:26,868 INFO     Epoch: [0][0/5174]	Time 1.946 (1.946)	Loss 0.6681 (0.6681)
+2022-12-20 00:36:59,386 INFO     Epoch: [0][1000/5174]	Time 0.151 (0.154)	Loss 0.0886 (0.1012)
+2022-12-20 00:39:33,035 INFO     Epoch: [0][2000/5174]	Time 0.152 (0.154)	Loss 0.0787 (0.0924)
+2022-12-20 00:42:06,921 INFO     Epoch: [0][3000/5174]	Time 0.151 (0.154)	Loss 0.0717 (0.0884)
+2022-12-20 00:44:40,815 INFO     Epoch: [0][4000/5174]	Time 0.154 (0.154)	Loss 0.0820 (0.0856)
+2022-12-20 00:47:14,887 INFO     Epoch: [0][5000/5174]	Time 0.155 (0.154)	Loss 0.0741 (0.0834)
+2022-12-20 00:47:42,398 INFO     Test: [0/2532]	Time 0.862 (0.862)	Loss 0.1272 (0.1272)
+2022-12-20 00:49:46,846 INFO     Test: [1000/2532]	Time 0.124 (0.125)	Loss 0.0794 (0.0679)
+2022-12-20 00:51:51,301 INFO     Test: [2000/2532]	Time 0.124 (0.125)	Loss 0.0644 (0.0682)
+2022-12-20 00:54:19,040 INFO     base_mAP:0.599
+
+2022-12-20 00:54:19,041 INFO     novel_mAP:0.469
+
+2022-12-20 00:54:19,041 INFO     [Test] mAP: 0.568, averageAP: 0.566
+					(Compute with all label) OP: 0.768, OR: 0.489, OF1: 0.597, CP: 0.723, CR: 0.377, CF1:0.495
+					(Compute with top-3 label) OP: 0.827, OR: 0.441, OF1: 0.575, CP: 0.769, CR: 0.332, CF1: 0.464
+2022-12-20 00:54:21,234 INFO     [Best] [Epoch 0]: Best mAP is 0.568
+2022-12-20 00:54:22,219 INFO     Epoch: [1][0/5174]	Time 0.863 (0.863)	Loss 0.0844 (0.0844)
+2022-12-20 00:56:55,960 INFO     Epoch: [1][1000/5174]	Time 0.147 (0.154)	Loss 0.0515 (0.0727)
+2022-12-20 00:59:30,309 INFO     Epoch: [1][2000/5174]	Time 0.140 (0.154)	Loss 0.0571 (0.0724)
+2022-12-20 01:02:04,925 INFO     Epoch: [1][3000/5174]	Time 0.165 (0.154)	Loss 0.0759 (0.0719)
+2022-12-20 01:04:39,522 INFO     Epoch: [1][4000/5174]	Time 0.154 (0.154)	Loss 0.0562 (0.0712)
+2022-12-20 01:07:13,894 INFO     Epoch: [1][5000/5174]	Time 0.155 (0.154)	Loss 0.0824 (0.0708)
+2022-12-20 01:07:41,374 INFO     Test: [0/2532]	Time 0.826 (0.826)	Loss 0.1175 (0.1175)
+2022-12-20 01:09:46,560 INFO     Test: [1000/2532]	Time 0.125 (0.126)	Loss 0.0768 (0.0631)
+2022-12-20 01:11:51,622 INFO     Test: [2000/2532]	Time 0.125 (0.125)	Loss 0.0617 (0.0636)
+2022-12-20 01:14:20,826 INFO     base_mAP:0.644
+
+2022-12-20 01:14:20,826 INFO     novel_mAP:0.512
+
+2022-12-20 01:14:20,826 INFO     [Test] mAP: 0.612, averageAP: 0.611
+					(Compute with all label) OP: 0.799, OR: 0.529, OF1: 0.637, CP: 0.754, CR: 0.430, CF1:0.547
+					(Compute with top-3 label) OP: 0.837, OR: 0.485, OF1: 0.614, CP: 0.784, CR: 0.389, CF1: 0.520
+2022-12-20 01:14:23,450 INFO     [Best] [Epoch 1]: Best mAP is 0.612
+2022-12-20 01:14:24,429 INFO     Epoch: [2][0/5174]	Time 0.859 (0.859)	Loss 0.0700 (0.0700)
+slurmstepd: error: *** JOB 470637 ON g0040 CANCELLED AT 2022-12-20T01:16:36 ***

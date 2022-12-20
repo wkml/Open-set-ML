@@ -1,7 +1,6 @@
 import torch
 import torch.nn as nn
 import numpy as np
-import torch.nn.functional as F
 from utils.checkpoint import load_clip_to_cpu
 from .semantic import semantic
 from clip import clip
@@ -23,7 +22,10 @@ class CLIP_SD(nn.Module):
                                       image_feature_dim = self.image_feature_dim,
                                       word_feature_dim=self.word_feature_dim)
 
-        self.classifiers = Element_Wise_Layer(self.num_classes, self.image_feature_dim)
+        # self.classifiers = Element_Wise_Layer(1, self.image_feature_dim)
+        self.fc1 = nn.Linear(self.image_feature_dim, self.image_feature_dim)
+        self.fc2 = nn.Linear(self.image_feature_dim, 1)
+        self.relu = nn.ReLU(inplace=True)
 
 
     def forward(self, image):
@@ -32,9 +34,10 @@ class CLIP_SD(nn.Module):
         # SD
         sd_features = self.word_semantic(image_features, text_features)    # [bs, 80, 512]
 
-        output = self.classifiers(sd_features)
+        output = self.fc1(sd_features)
+        output = self.fc2(self.relu(output))
         
-        return output
+        return output.squeeze()
 
     def get_text_features(self, classnames):
         temp = "a photo of a {}."
@@ -42,4 +45,3 @@ class CLIP_SD(nn.Module):
         prompts = torch.cat([clip.tokenize(p) for p in prompts])
         text_features = self.clip_model.encode_text(prompts)
         return nn.Parameter(text_features, requires_grad=False)
-    

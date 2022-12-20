@@ -21,6 +21,7 @@ from config import arg_parse, logger, show_args
 
 global best_prec
 best_prec = 0
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def main():
@@ -65,16 +66,22 @@ def main():
                     num_classes=args.num_classes,
                     word_feature_dim=512,
                     )
-    model.cuda()
+    model.to(device)
 
     for p in model.parameters():
         p.requires_grad = False
     for p in model.word_semantic.parameters():
         p.requires_grad = True
-    for p in model.classifiers.parameters():
+    # for p in model.classifiers.parameters():
+    #     p.requires_grad = True
+    for p in model.fc1.parameters():
+        p.requires_grad = True
+    for p in model.fc2.parameters():
+        p.requires_grad = True
+    for p in model.relu.parameters():
         p.requires_grad = True
 
-    criterion = nn.BCEWithLogitsLoss(reduce=True, size_average=True).cuda()
+    criterion = nn.BCEWithLogitsLoss(reduce=True, size_average=True).to(device)
     optimizer = torch.optim.Adam(filter(lambda p : p.requires_grad, model.parameters()), lr=args.lr)
     scheduler = lr_scheduler.StepLR(optimizer, step_size=args.step_epoch, gamma=0.1)
 
@@ -138,7 +145,7 @@ def train(train_loader, model, criterion, optimizer, epoch, args, writer):
     for i, (input, target) in enumerate(train_loader):
         # measure data loading time
         data_time.update(time.time() - end)
-        input, target = input.cuda(), target.float().cuda()
+        input, target = input.to(device), target.float().to(device)
 
         # compute output
         output = model(input)
@@ -173,7 +180,7 @@ def validate(val_loader, model, criterion, args):
     model.eval()
     end = time.time()
     for i, (input, target) in enumerate(val_loader):
-        input, target = input.cuda(), target.float().cuda()
+        input, target = input.to(device), target.float().to(device)
 
         output = model(input)
 
@@ -207,6 +214,14 @@ def validate(val_loader, model, criterion, args):
     OP, OR, OF1, CP, CR, CF1 = apMeter.overall()
     OP_K, OR_K, OF1_K, CP_K, CR_K, CF1_K = apMeter.overall_topk(3)
 
+    with open(args.category_file, 'r') as load_category:
+        classnames = json.load(load_category)
+    base_mAP, novel_mAP, class_ap = apMeter.compute_ap(classnames)
+    with open(args.post + '_ap.txt', 'w') as f:
+        f.write(str(class_ap))
+
+    logger.info("base_mAP:{base_mAP:.3f}\n".format(base_mAP=base_mAP))
+    logger.info("novel_mAP:{novel_mAP:.3f}\n".format(novel_mAP=novel_mAP))
     logger.info('[Test] mAP: {mAP:.3f}, averageAP: {averageAP:.3f}\n'
                 '\t\t\t\t\t(Compute with all label) OP: {OP:.3f}, OR: {OR:.3f}, OF1: {OF1:.3f}, CP: {CP:.3f}, CR: {CR:.3f}, CF1:{CF1:.3f}\n'
                 '\t\t\t\t\t(Compute with top-3 label) OP: {OP_K:.3f}, OR: {OR_K:.3f}, OF1: {OF1_K:.3f}, CP: {CP_K:.3f}, CR: {CR_K:.3f}, CF1: {CF1_K:.3f}'.format(

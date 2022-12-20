@@ -1,5 +1,5 @@
 #!/bin/bash
-post='SD-CLIP_BASE-COCO-exp1.2-lr5e-4-bs16'
+post='SD-CLIP_BASE-COCO-exp6.1-lr2e-3-bs16'
 backbone_name='RN101'
 dataset='COCO'
 train_data_dir='/data/public/coco2014/train2014'
@@ -12,9 +12,9 @@ graph_file='./data/coco/prob_train.npy'
 word_file='./data/coco/vectors.npy'
 category_file='./data/coco/category_name.json'
 
-batch_size=16
+batch_size=64
 epochs=20
-learning_rate=5e-4
+learning_rate=2e-3
 momentum=0.9
 weight_decay=0
 num_classes=80

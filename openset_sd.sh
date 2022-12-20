@@ -1,5 +1,5 @@
 #!/bin/bash
-post='Openset_SD-exp1.0-lr3e-4-bs16'
+post='Openset_SD-exp1.1-lr3e-4-bs16'
 backbone_name='RN101'
 dataset='COCO'
 train_data_dir='/data/public/coco2014/train2014'
@@ -58,5 +58,5 @@ CUDA_VISIBLE_DEVICES=${cuda} python openset_sd.py \
 --print_freq ${print_freq} \
 --post ${post} \
 --backbone_name $backbone_name \
---resume exp/checkpoint/Openset_SD-exp1.0-lr3e-4-bs16/Checkpoint_Best.pth \
---evaluate \
+--openset \
+# --resume exp/checkpoint/Openset_SD-exp1.0-lr3e-4-bs16/Checkpoint_Best.pth \

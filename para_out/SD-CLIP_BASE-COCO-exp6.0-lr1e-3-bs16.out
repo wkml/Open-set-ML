@@ -1,0 +1,274 @@
+2022-12-20 01:06:45,980 INFO     ==========================================
+2022-12-20 01:06:45,981 INFO     ==========       CONFIG      =============
+2022-12-20 01:06:45,981 INFO     ==========================================
+2022-12-20 01:06:45,981 INFO     dataset: COCO
+2022-12-20 01:06:45,981 INFO     train_data: /data/public/coco2014/train2014
+2022-12-20 01:06:45,981 INFO     test_data: /data/public/coco2014/val2014
+2022-12-20 01:06:45,981 INFO     train_list: /data/public/coco2014/annotations/instances_train2014.json
+2022-12-20 01:06:45,981 INFO     test_list: /data/public/coco2014/annotations/instances_val2014.json
+2022-12-20 01:06:45,981 INFO     train_label: ./data/coco/train_label_vectors.npy
+2022-12-20 01:06:45,981 INFO     graph_file: ./data/coco/prob_train.npy
+2022-12-20 01:06:45,981 INFO     word_file: ./data/coco/vectors.npy
+2022-12-20 01:06:45,981 INFO     test_label: ./data/coco/val_label_vectors.npy
+2022-12-20 01:06:45,981 INFO     print_freq: 1000
+2022-12-20 01:06:45,981 INFO     workers: 5
+2022-12-20 01:06:45,981 INFO     epochs: 20
+2022-12-20 01:06:45,982 INFO     start_epoch: 0
+2022-12-20 01:06:45,982 INFO     step_epoch: 10
+2022-12-20 01:06:45,982 INFO     batch_size: 64
+2022-12-20 01:06:45,982 INFO     lr: 0.001
+2022-12-20 01:06:45,982 INFO     momentum: 0.9
+2022-12-20 01:06:45,982 INFO     weight_decay: 0.0
+2022-12-20 01:06:45,982 INFO     resume: 
+2022-12-20 01:06:45,982 INFO     crop_size: 448
+2022-12-20 01:06:45,982 INFO     scale_size: 512
+2022-12-20 01:06:45,982 INFO     evaluate: False
+2022-12-20 01:06:45,982 INFO     post: SD-CLIP_BASE-COCO-exp6.0-lr1e-3-bs16
+2022-12-20 01:06:45,982 INFO     num_classes: 80
+2022-12-20 01:06:45,982 INFO     backbone_name: RN101
+2022-12-20 01:06:45,982 INFO     category_file: ./data/coco/category_name.json
+2022-12-20 01:06:45,982 INFO     n_ctx: 16
+2022-12-20 01:06:45,982 INFO     ctx_init: False
+2022-12-20 01:06:45,982 INFO     csc: False
+2022-12-20 01:06:45,982 INFO     class_token_position: end
+2022-12-20 01:06:45,982 INFO     openset: False
+2022-12-20 01:06:45,982 INFO     ==========================================
+2022-12-20 01:06:45,982 INFO     ===========        END        ============
+2022-12-20 01:06:45,982 INFO     ==========================================
+2022-12-20 01:06:45,982 INFO     
+
+2022-12-20 01:06:45,982 INFO     ==> Creating dataloader...
+You will perform multi-scale on images for scale 640
+loading annotations into memory...
+Done (t=11.38s)
+creating index...
+index created!
+loading annotations into memory...
+Done (t=5.98s)
+creating index...
+index created!
+2022-12-20 01:07:06,090 INFO     ==> Done!
+
+2022-12-20 01:07:06,090 INFO     ==> Loading the network ...
+2022-12-20 01:07:14,673 INFO     ==> Done!
+
+2022-12-20 01:07:14,674 INFO     Run Experiment...
+2022-12-20 01:07:18,520 INFO     Epoch: [0][0/1294]	Time 3.735 (3.735)	Loss 0.7394 (0.7394)
+2022-12-20 01:16:43,357 INFO     Epoch: [0][1000/1294]	Time 0.563 (0.567)	Loss 0.0647 (0.0873)
+2022-12-20 01:19:31,058 INFO     Test: [0/633]	Time 2.042 (2.042)	Loss 0.0681 (0.0681)
+2022-12-20 01:25:33,887 INFO     base_mAP:0.786
+
+2022-12-20 01:25:33,889 INFO     novel_mAP:0.639
+
+2022-12-20 01:25:33,890 INFO     [Test] mAP: 0.751, averageAP: 0.749
+					(Compute with all label) OP: 0.829, OR: 0.686, OF1: 0.750, CP: 0.793, CR: 0.627, CF1:0.700
+					(Compute with top-3 label) OP: 0.877, OR: 0.608, OF1: 0.719, CP: 0.830, CR: 0.556, CF1: 0.666
+2022-12-20 01:25:35,909 INFO     [Best] [Epoch 0]: Best mAP is 0.751
+2022-12-20 01:25:38,335 INFO     Epoch: [1][0/1294]	Time 1.902 (1.902)	Loss 0.0589 (0.0589)
+2022-12-20 01:35:03,512 INFO     Epoch: [1][1000/1294]	Time 0.565 (0.566)	Loss 0.0547 (0.0549)
+2022-12-20 01:37:51,118 INFO     Test: [0/633]	Time 1.980 (1.980)	Loss 0.0611 (0.0611)
+2022-12-20 01:43:56,981 INFO     base_mAP:0.805
+
+2022-12-20 01:43:56,981 INFO     novel_mAP:0.669
+
+2022-12-20 01:43:56,981 INFO     [Test] mAP: 0.772, averageAP: 0.771
+					(Compute with all label) OP: 0.871, OR: 0.674, OF1: 0.760, CP: 0.839, CR: 0.621, CF1:0.714
+					(Compute with top-3 label) OP: 0.905, OR: 0.608, OF1: 0.727, CP: 0.861, CR: 0.560, CF1: 0.679
+2022-12-20 01:43:59,470 INFO     [Best] [Epoch 1]: Best mAP is 0.772
+2022-12-20 01:44:01,730 INFO     Epoch: [2][0/1294]	Time 1.725 (1.725)	Loss 0.0579 (0.0579)
+2022-12-20 01:53:26,525 INFO     Epoch: [2][1000/1294]	Time 0.564 (0.566)	Loss 0.0492 (0.0529)
+2022-12-20 01:56:13,942 INFO     Test: [0/633]	Time 1.990 (1.990)	Loss 0.0626 (0.0626)
+2022-12-20 02:02:18,369 INFO     base_mAP:0.810
+
+2022-12-20 02:02:18,369 INFO     novel_mAP:0.676
+
+2022-12-20 02:02:18,369 INFO     [Test] mAP: 0.778, averageAP: 0.777
+					(Compute with all label) OP: 0.893, OR: 0.657, OF1: 0.757, CP: 0.852, CR: 0.601, CF1:0.705
+					(Compute with top-3 label) OP: 0.921, OR: 0.598, OF1: 0.725, CP: 0.875, CR: 0.548, CF1: 0.674
+2022-12-20 02:02:20,933 INFO     [Best] [Epoch 2]: Best mAP is 0.778
+2022-12-20 02:02:23,174 INFO     Epoch: [3][0/1294]	Time 1.724 (1.724)	Loss 0.0435 (0.0435)
+2022-12-20 02:11:47,551 INFO     Epoch: [3][1000/1294]	Time 0.566 (0.566)	Loss 0.0472 (0.0521)
+2022-12-20 02:14:34,879 INFO     Test: [0/633]	Time 1.994 (1.994)	Loss 0.0597 (0.0597)
+2022-12-20 02:20:40,141 INFO     base_mAP:0.813
+
+2022-12-20 02:20:40,142 INFO     novel_mAP:0.681
+
+2022-12-20 02:20:40,142 INFO     [Test] mAP: 0.781, averageAP: 0.780
+					(Compute with all label) OP: 0.867, OR: 0.688, OF1: 0.767, CP: 0.823, CR: 0.646, CF1:0.724
+					(Compute with top-3 label) OP: 0.903, OR: 0.619, OF1: 0.734, CP: 0.854, CR: 0.584, CF1: 0.694
+2022-12-20 02:20:42,814 INFO     [Best] [Epoch 3]: Best mAP is 0.781
+2022-12-20 02:20:45,118 INFO     Epoch: [4][0/1294]	Time 1.778 (1.778)	Loss 0.0482 (0.0482)
+2022-12-20 02:30:08,928 INFO     Epoch: [4][1000/1294]	Time 0.568 (0.565)	Loss 0.0553 (0.0514)
+2022-12-20 02:32:55,997 INFO     Test: [0/633]	Time 1.906 (1.906)	Loss 0.0601 (0.0601)
+2022-12-20 02:39:00,701 INFO     base_mAP:0.816
+
+2022-12-20 02:39:00,702 INFO     novel_mAP:0.686
+
+2022-12-20 02:39:00,702 INFO     [Test] mAP: 0.785, averageAP: 0.784
+					(Compute with all label) OP: 0.881, OR: 0.683, OF1: 0.770, CP: 0.844, CR: 0.637, CF1:0.726
+					(Compute with top-3 label) OP: 0.914, OR: 0.615, OF1: 0.735, CP: 0.879, CR: 0.574, CF1: 0.695
+2022-12-20 02:39:03,274 INFO     [Best] [Epoch 4]: Best mAP is 0.785
+2022-12-20 02:39:05,737 INFO     Epoch: [5][0/1294]	Time 1.946 (1.946)	Loss 0.0448 (0.0448)
+2022-12-20 02:48:29,343 INFO     Epoch: [5][1000/1294]	Time 0.562 (0.565)	Loss 0.0437 (0.0510)
+2022-12-20 02:51:16,551 INFO     Test: [0/633]	Time 2.022 (2.022)	Loss 0.0582 (0.0582)
+2022-12-20 02:57:18,444 INFO     base_mAP:0.816
+
+2022-12-20 02:57:18,447 INFO     novel_mAP:0.684
+
+2022-12-20 02:57:18,447 INFO     [Test] mAP: 0.784, averageAP: 0.783
+					(Compute with all label) OP: 0.851, OR: 0.706, OF1: 0.772, CP: 0.812, CR: 0.661, CF1:0.729
+					(Compute with top-3 label) OP: 0.896, OR: 0.626, OF1: 0.737, CP: 0.850, CR: 0.589, CF1: 0.696
+2022-12-20 02:57:22,075 INFO     Epoch: [6][0/1294]	Time 1.965 (1.965)	Loss 0.0554 (0.0554)
+2022-12-20 03:06:45,558 INFO     Epoch: [6][1000/1294]	Time 0.562 (0.565)	Loss 0.0507 (0.0508)
+2022-12-20 03:09:32,560 INFO     Test: [0/633]	Time 1.962 (1.962)	Loss 0.0614 (0.0614)
+2022-12-20 03:15:36,499 INFO     base_mAP:0.817
+
+2022-12-20 03:15:36,499 INFO     novel_mAP:0.688
+
+2022-12-20 03:15:36,499 INFO     [Test] mAP: 0.786, averageAP: 0.785
+					(Compute with all label) OP: 0.858, OR: 0.703, OF1: 0.773, CP: 0.827, CR: 0.649, CF1:0.727
+					(Compute with top-3 label) OP: 0.904, OR: 0.622, OF1: 0.737, CP: 0.863, CR: 0.575, CF1: 0.690
+2022-12-20 03:15:38,833 INFO     [Best] [Epoch 6]: Best mAP is 0.786
+2022-12-20 03:15:41,334 INFO     Epoch: [7][0/1294]	Time 1.972 (1.972)	Loss 0.0501 (0.0501)
+2022-12-20 03:25:04,634 INFO     Epoch: [7][1000/1294]	Time 0.563 (0.565)	Loss 0.0514 (0.0504)
+2022-12-20 03:27:51,580 INFO     Test: [0/633]	Time 1.926 (1.926)	Loss 0.0638 (0.0638)
+2022-12-20 03:33:56,416 INFO     base_mAP:0.819
+
+2022-12-20 03:33:56,416 INFO     novel_mAP:0.691
+
+2022-12-20 03:33:56,416 INFO     [Test] mAP: 0.788, averageAP: 0.787
+					(Compute with all label) OP: 0.869, OR: 0.695, OF1: 0.772, CP: 0.831, CR: 0.647, CF1:0.728
+					(Compute with top-3 label) OP: 0.909, OR: 0.621, OF1: 0.738, CP: 0.861, CR: 0.582, CF1: 0.695
+2022-12-20 03:33:58,977 INFO     [Best] [Epoch 7]: Best mAP is 0.788
+2022-12-20 03:34:01,503 INFO     Epoch: [8][0/1294]	Time 2.001 (2.001)	Loss 0.0406 (0.0406)
+2022-12-20 03:43:24,858 INFO     Epoch: [8][1000/1294]	Time 0.562 (0.565)	Loss 0.0460 (0.0502)
+2022-12-20 03:46:12,086 INFO     Test: [0/633]	Time 2.232 (2.232)	Loss 0.0614 (0.0614)
+2022-12-20 03:52:15,198 INFO     base_mAP:0.818
+
+2022-12-20 03:52:15,198 INFO     novel_mAP:0.695
+
+2022-12-20 03:52:15,198 INFO     [Test] mAP: 0.788, averageAP: 0.788
+					(Compute with all label) OP: 0.889, OR: 0.676, OF1: 0.768, CP: 0.848, CR: 0.626, CF1:0.720
+					(Compute with top-3 label) OP: 0.920, OR: 0.611, OF1: 0.734, CP: 0.874, CR: 0.568, CF1: 0.689
+2022-12-20 03:52:17,752 INFO     [Best] [Epoch 8]: Best mAP is 0.788
+2022-12-20 03:52:20,294 INFO     Epoch: [9][0/1294]	Time 2.023 (2.023)	Loss 0.0557 (0.0557)
+2022-12-20 04:01:43,114 INFO     Epoch: [9][1000/1294]	Time 0.567 (0.564)	Loss 0.0529 (0.0499)
+2022-12-20 04:04:29,949 INFO     Test: [0/633]	Time 1.924 (1.924)	Loss 0.0603 (0.0603)
+2022-12-20 04:10:34,135 INFO     base_mAP:0.821
+
+2022-12-20 04:10:34,137 INFO     novel_mAP:0.691
+
+2022-12-20 04:10:34,137 INFO     [Test] mAP: 0.789, averageAP: 0.788
+					(Compute with all label) OP: 0.880, OR: 0.686, OF1: 0.771, CP: 0.841, CR: 0.639, CF1:0.726
+					(Compute with top-3 label) OP: 0.917, OR: 0.614, OF1: 0.736, CP: 0.871, CR: 0.573, CF1: 0.691
+2022-12-20 04:10:36,346 INFO     [Best] [Epoch 9]: Best mAP is 0.789
+2022-12-20 04:10:38,692 INFO     Epoch: [10][0/1294]	Time 1.834 (1.834)	Loss 0.0488 (0.0488)
+2022-12-20 04:20:01,622 INFO     Epoch: [10][1000/1294]	Time 0.567 (0.564)	Loss 0.0618 (0.0482)
+2022-12-20 04:22:48,803 INFO     Test: [0/633]	Time 2.185 (2.185)	Loss 0.0591 (0.0591)
+2022-12-20 04:28:52,442 INFO     base_mAP:0.827
+
+2022-12-20 04:28:52,442 INFO     novel_mAP:0.703
+
+2022-12-20 04:28:52,442 INFO     [Test] mAP: 0.797, averageAP: 0.796
+					(Compute with all label) OP: 0.872, OR: 0.708, OF1: 0.781, CP: 0.833, CR: 0.663, CF1:0.738
+					(Compute with top-3 label) OP: 0.910, OR: 0.631, OF1: 0.745, CP: 0.865, CR: 0.593, CF1: 0.703
+2022-12-20 04:28:54,929 INFO     [Best] [Epoch 10]: Best mAP is 0.797
+2022-12-20 04:28:57,444 INFO     Epoch: [11][0/1294]	Time 1.988 (1.988)	Loss 0.0377 (0.0377)
+2022-12-20 04:38:20,577 INFO     Epoch: [11][1000/1294]	Time 0.564 (0.565)	Loss 0.0473 (0.0475)
+2022-12-20 04:41:07,668 INFO     Test: [0/633]	Time 1.915 (1.915)	Loss 0.0590 (0.0590)
+2022-12-20 04:47:10,344 INFO     base_mAP:0.829
+
+2022-12-20 04:47:10,344 INFO     novel_mAP:0.705
+
+2022-12-20 04:47:10,344 INFO     [Test] mAP: 0.799, averageAP: 0.798
+					(Compute with all label) OP: 0.887, OR: 0.697, OF1: 0.780, CP: 0.853, CR: 0.653, CF1:0.740
+					(Compute with top-3 label) OP: 0.921, OR: 0.624, OF1: 0.744, CP: 0.876, CR: 0.587, CF1: 0.703
+2022-12-20 04:47:12,890 INFO     [Best] [Epoch 11]: Best mAP is 0.799
+2022-12-20 04:47:15,464 INFO     Epoch: [12][0/1294]	Time 2.049 (2.049)	Loss 0.0469 (0.0469)
+2022-12-20 04:56:38,480 INFO     Epoch: [12][1000/1294]	Time 0.564 (0.564)	Loss 0.0461 (0.0473)
+2022-12-20 04:59:25,618 INFO     Test: [0/633]	Time 2.113 (2.113)	Loss 0.0587 (0.0587)
+2022-12-20 05:05:28,995 INFO     base_mAP:0.830
+
+2022-12-20 05:05:28,995 INFO     novel_mAP:0.705
+
+2022-12-20 05:05:28,995 INFO     [Test] mAP: 0.800, averageAP: 0.799
+					(Compute with all label) OP: 0.884, OR: 0.700, OF1: 0.782, CP: 0.851, CR: 0.657, CF1:0.742
+					(Compute with top-3 label) OP: 0.919, OR: 0.627, OF1: 0.746, CP: 0.874, CR: 0.591, CF1: 0.705
+2022-12-20 05:05:31,492 INFO     [Best] [Epoch 12]: Best mAP is 0.800
+2022-12-20 05:05:33,783 INFO     Epoch: [13][0/1294]	Time 1.760 (1.760)	Loss 0.0436 (0.0436)
+2022-12-20 05:14:57,016 INFO     Epoch: [13][1000/1294]	Time 0.562 (0.564)	Loss 0.0440 (0.0471)
+2022-12-20 05:17:44,151 INFO     Test: [0/633]	Time 2.087 (2.087)	Loss 0.0589 (0.0589)
+2022-12-20 05:23:47,915 INFO     base_mAP:0.831
+
+2022-12-20 05:23:47,916 INFO     novel_mAP:0.707
+
+2022-12-20 05:23:47,916 INFO     [Test] mAP: 0.801, averageAP: 0.800
+					(Compute with all label) OP: 0.875, OR: 0.711, OF1: 0.784, CP: 0.843, CR: 0.666, CF1:0.744
+					(Compute with top-3 label) OP: 0.915, OR: 0.632, OF1: 0.747, CP: 0.869, CR: 0.594, CF1: 0.706
+2022-12-20 05:23:50,450 INFO     [Best] [Epoch 13]: Best mAP is 0.801
+2022-12-20 05:23:52,977 INFO     Epoch: [14][0/1294]	Time 2.004 (2.004)	Loss 0.0511 (0.0511)
+2022-12-20 05:33:15,910 INFO     Epoch: [14][1000/1294]	Time 0.562 (0.564)	Loss 0.0467 (0.0470)
+2022-12-20 05:36:02,794 INFO     Test: [0/633]	Time 1.889 (1.889)	Loss 0.0589 (0.0589)
+2022-12-20 05:42:06,982 INFO     base_mAP:0.832
+
+2022-12-20 05:42:06,982 INFO     novel_mAP:0.707
+
+2022-12-20 05:42:06,982 INFO     [Test] mAP: 0.801, averageAP: 0.801
+					(Compute with all label) OP: 0.877, OR: 0.710, OF1: 0.784, CP: 0.836, CR: 0.667, CF1:0.742
+					(Compute with top-3 label) OP: 0.915, OR: 0.632, OF1: 0.747, CP: 0.869, CR: 0.596, CF1: 0.707
+2022-12-20 05:42:09,508 INFO     [Best] [Epoch 14]: Best mAP is 0.801
+2022-12-20 05:42:11,713 INFO     Epoch: [15][0/1294]	Time 1.684 (1.684)	Loss 0.0558 (0.0558)
+2022-12-20 05:51:34,936 INFO     Epoch: [15][1000/1294]	Time 0.568 (0.564)	Loss 0.0452 (0.0469)
+2022-12-20 05:54:22,038 INFO     Test: [0/633]	Time 1.970 (1.970)	Loss 0.0587 (0.0587)
+2022-12-20 06:00:25,584 INFO     base_mAP:0.832
+
+2022-12-20 06:00:25,584 INFO     novel_mAP:0.708
+
+2022-12-20 06:00:25,585 INFO     [Test] mAP: 0.802, averageAP: 0.801
+					(Compute with all label) OP: 0.881, OR: 0.705, OF1: 0.783, CP: 0.841, CR: 0.662, CF1:0.740
+					(Compute with top-3 label) OP: 0.918, OR: 0.630, OF1: 0.747, CP: 0.873, CR: 0.594, CF1: 0.707
+2022-12-20 06:00:28,185 INFO     [Best] [Epoch 15]: Best mAP is 0.802
+2022-12-20 06:00:30,398 INFO     Epoch: [16][0/1294]	Time 1.688 (1.688)	Loss 0.0536 (0.0536)
+2022-12-20 06:09:53,417 INFO     Epoch: [16][1000/1294]	Time 0.563 (0.564)	Loss 0.0416 (0.0467)
+2022-12-20 06:12:40,388 INFO     Test: [0/633]	Time 1.888 (1.888)	Loss 0.0591 (0.0591)
+2022-12-20 06:18:43,508 INFO     base_mAP:0.833
+
+2022-12-20 06:18:43,508 INFO     novel_mAP:0.709
+
+2022-12-20 06:18:43,508 INFO     [Test] mAP: 0.802, averageAP: 0.802
+					(Compute with all label) OP: 0.882, OR: 0.706, OF1: 0.784, CP: 0.849, CR: 0.662, CF1:0.744
+					(Compute with top-3 label) OP: 0.919, OR: 0.630, OF1: 0.747, CP: 0.874, CR: 0.593, CF1: 0.706
+2022-12-20 06:18:46,075 INFO     [Best] [Epoch 16]: Best mAP is 0.802
+2022-12-20 06:18:48,615 INFO     Epoch: [17][0/1294]	Time 2.004 (2.004)	Loss 0.0506 (0.0506)
+2022-12-20 06:28:11,777 INFO     Epoch: [17][1000/1294]	Time 0.561 (0.565)	Loss 0.0411 (0.0466)
+2022-12-20 06:30:58,746 INFO     Test: [0/633]	Time 1.881 (1.881)	Loss 0.0587 (0.0587)
+2022-12-20 06:37:01,447 INFO     base_mAP:0.833
+
+2022-12-20 06:37:01,447 INFO     novel_mAP:0.709
+
+2022-12-20 06:37:01,447 INFO     [Test] mAP: 0.803, averageAP: 0.802
+					(Compute with all label) OP: 0.873, OR: 0.714, OF1: 0.785, CP: 0.840, CR: 0.670, CF1:0.745
+					(Compute with top-3 label) OP: 0.913, OR: 0.635, OF1: 0.749, CP: 0.868, CR: 0.600, CF1: 0.709
+2022-12-20 06:37:04,002 INFO     [Best] [Epoch 17]: Best mAP is 0.803
+2022-12-20 06:37:06,343 INFO     Epoch: [18][0/1294]	Time 1.825 (1.825)	Loss 0.0385 (0.0385)
+2022-12-20 06:46:29,724 INFO     Epoch: [18][1000/1294]	Time 0.564 (0.565)	Loss 0.0385 (0.0466)
+2022-12-20 06:49:17,080 INFO     Test: [0/633]	Time 2.276 (2.276)	Loss 0.0589 (0.0589)
+2022-12-20 06:55:20,488 INFO     base_mAP:0.834
+
+2022-12-20 06:55:20,488 INFO     novel_mAP:0.710
+
+2022-12-20 06:55:20,489 INFO     [Test] mAP: 0.803, averageAP: 0.803
+					(Compute with all label) OP: 0.878, OR: 0.710, OF1: 0.785, CP: 0.841, CR: 0.664, CF1:0.742
+					(Compute with top-3 label) OP: 0.918, OR: 0.632, OF1: 0.749, CP: 0.875, CR: 0.594, CF1: 0.707
+2022-12-20 06:55:23,045 INFO     [Best] [Epoch 18]: Best mAP is 0.803
+2022-12-20 06:55:25,649 INFO     Epoch: [19][0/1294]	Time 2.084 (2.084)	Loss 0.0537 (0.0537)
+2022-12-20 07:04:49,377 INFO     Epoch: [19][1000/1294]	Time 0.566 (0.565)	Loss 0.0539 (0.0466)
+2022-12-20 07:07:36,575 INFO     Test: [0/633]	Time 1.881 (1.881)	Loss 0.0588 (0.0588)
+2022-12-20 07:13:40,117 INFO     base_mAP:0.834
+
+2022-12-20 07:13:40,117 INFO     novel_mAP:0.710
+
+2022-12-20 07:13:40,117 INFO     [Test] mAP: 0.804, averageAP: 0.803
+					(Compute with all label) OP: 0.874, OR: 0.715, OF1: 0.787, CP: 0.840, CR: 0.672, CF1:0.747
+					(Compute with top-3 label) OP: 0.913, OR: 0.636, OF1: 0.750, CP: 0.867, CR: 0.600, CF1: 0.709
+2022-12-20 07:13:42,733 INFO     [Best] [Epoch 19]: Best mAP is 0.804
