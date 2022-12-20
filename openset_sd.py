@@ -71,7 +71,13 @@ def main():
         p.requires_grad = False
     for p in model.word_semantic.parameters():
         p.requires_grad = True
-    for p in model.classifiers.parameters():
+    # for p in model.classifiers.parameters():
+    #     p.requires_grad = True
+    for p in model.fc1.parameters():
+        p.requires_grad = True
+    for p in model.fc2.parameters():
+        p.requires_grad = True
+    for p in model.relu.parameters():
         p.requires_grad = True
 
     criterion = nn.BCEWithLogitsLoss(reduce=True, size_average=True).to(device)

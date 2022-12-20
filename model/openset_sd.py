@@ -20,7 +20,10 @@ class CLIP_SD(nn.Module):
                                       image_feature_dim = self.image_feature_dim,
                                       word_feature_dim=self.word_feature_dim)
 
-        self.classifiers = Element_Wise_Layer(1, self.image_feature_dim)
+        # self.classifiers = Element_Wise_Layer(1, self.image_feature_dim)
+        self.fc1 = nn.Linear(self.image_feature_dim, self.image_feature_dim)
+        self.fc2 = nn.Linear(self.image_feature_dim, 1)
+        self.relu = nn.ReLU(inplace=True)
 
     def forward(self, image, train=True):
         image_features = self.clip_model.encode_image(image.type(self.dtype))       #[bs, 2048, H, W]

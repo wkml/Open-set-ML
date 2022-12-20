@@ -1,5 +1,5 @@
 #!/bin/bash
-post='Openset_SD-exp1.1-lr3e-4-bs16'
+post='Openset_SD-exp2.0-lr1e-3-bs16'
 backbone_name='RN101'
 dataset='COCO'
 train_data_dir='/data/public/coco2014/train2014'
@@ -12,9 +12,9 @@ graph_file='./data/coco/prob_train.npy'
 word_file='./data/coco/vectors.npy'
 category_file='./data/coco/category_name.json'
 
-batch_size=16
+batch_size=64
 epochs=20
-learning_rate=3e-4
+learning_rate=1e-3
 momentum=0.9
 weight_decay=0
 num_classes=80
@@ -28,7 +28,7 @@ start_epoch=0
 #epoch number to decend lr
 step_epoch=10
 #print frequency (default: 10)
-print_freq=1000
+print_freq=100
 #path to latest checkpoint (default: none)
 #resume="model_best_vgg_pretrain_bk.pth.tar"
 #resume="backup/86.26.pth.tar"
