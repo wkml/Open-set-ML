@@ -18,15 +18,16 @@ class CLIP_SD(nn.Module):
         self.text_features = self.get_text_features(classnames)
         self.word_semantic = semantic(num_classes=80,
                                       image_feature_dim = self.image_feature_dim,
-                                      word_feature_dim=self.word_feature_dim)
+                                      word_feature_dim=self.word_feature_dim,
+                                      intermediary_dim=256)
 
         # self.classifiers = Element_Wise_Layer(1, self.image_feature_dim)
         self.logit_scale = self.clip_model.logit_scale
-        self.fc = nn.Linear(self.image_feature_dim, 512)
+        # self.fc = nn.Linear(self.image_feature_dim, 512)
         self.relu = nn.ReLU()
 
     def forward(self, image, train=True):
-        image_features = self.clip_model.encode_image(image.type(self.dtype))       #[bs, 2048, H, W]
+        image_features, _ = self.clip_model.encode_image(image.type(self.dtype))       #[bs, 2048, H, W]
         
         # SD
         if train:
@@ -36,7 +37,6 @@ class CLIP_SD(nn.Module):
             text_features = self.text_features
             sd_features = self.word_semantic(image_features, text_features, 80)
 
-        sd_features = self.fc(sd_features)
         sd_features = self.relu(sd_features)
         
         sd_features = sd_features / sd_features.norm(dim=-1, keepdim=True)
