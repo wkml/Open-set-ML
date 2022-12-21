@@ -21,22 +21,31 @@ class CLIP_SD(nn.Module):
                                       word_feature_dim=self.word_feature_dim)
 
         # self.classifiers = Element_Wise_Layer(1, self.image_feature_dim)
-        self.fc1 = nn.Linear(self.image_feature_dim, self.image_feature_dim)
-        self.fc2 = nn.Linear(self.image_feature_dim, 1)
-        self.relu = nn.ReLU(inplace=True)
+        self.logit_scale = self.clip_model.logit_scale
+        self.fc = nn.Linear(self.image_feature_dim, 512)
+        self.relu = nn.ReLU()
 
     def forward(self, image, train=True):
         image_features = self.clip_model.encode_image(image.type(self.dtype))       #[bs, 2048, H, W]
         
         # SD
         if train:
-            text_features = self.text_features
-            sd_features = self.word_semantic(image_features, text_features[:60], 60)    # [bs, 80, 512]
+            text_features = self.text_features[:60]
+            sd_features = self.word_semantic(image_features, text_features, 60)    # [bs, 80, 512]
         else:
             text_features = self.text_features
             sd_features = self.word_semantic(image_features, text_features, 80)
 
-        output = self.classifiers(sd_features)
+        sd_features = self.fc(sd_features)
+        sd_features = self.relu(sd_features)
+        
+        sd_features = sd_features / sd_features.norm(dim=-1, keepdim=True)
+        text_features = text_features / text_features.norm(dim=-1, keepdim=True)
+
+        logit_scale = self.logit_scale.exp()
+        logits = logit_scale * sd_features @ text_features.t()          # [bs, 80, 80]
+
+        output = torch.diagonal(logits, dim1=-2, dim2=-1)
         
         return output
 

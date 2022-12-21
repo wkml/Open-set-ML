@@ -12,7 +12,7 @@ import torch.optim.lr_scheduler as lr_scheduler
 
 from utils.transforms import get_train_test_set
 from utils.metrics import AverageMeter, AveragePrecisionMeter, Compute_mAP_VOC2012
-from model.openset_sd import CLIP_SD
+from model.contrast_sd import CLIP_SD
 from utils.checkpoint import save_checkpoint
 
 from tensorboardX import SummaryWriter
@@ -22,6 +22,7 @@ from config import arg_parse, logger, show_args
 global best_prec
 best_prec = 0
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 
 def main():
     global best_prec
@@ -51,16 +52,16 @@ def main():
     test_list = args.test_list
     train_label = args.train_label
     test_label = args.test_label
-    train_loader, test_loader = get_train_test_set(train_data_dir,test_data_dir,train_list,test_list,train_label, test_label, args)
+    train_loader, test_loader = get_train_test_set(train_data_dir,test_data_dir,train_list,test_list,train_label, test_label,args)
     with open(args.category_file, 'r') as load_category:
-        classnames = json.load(load_category)
+        category_map = json.load(load_category)
     logger.info("==> Done!\n")
 
     # load the network
     logger.info("==> Loading the network ...")
 
     model = CLIP_SD(args=args,
-                    classnames=classnames,
+                    classnames=category_map,
                     image_feature_dim=2048,
                     num_classes=args.num_classes,
                     word_feature_dim=512,
@@ -75,6 +76,14 @@ def main():
         p.requires_grad = True
     for p in model.relu.parameters():
         p.requires_grad = True    
+    # for p in model.classifiers.parameters():
+    #     p.requires_grad = True
+    # for p in model.fc1.parameters():
+    #     p.requires_grad = True
+    # for p in model.fc2.parameters():
+    #     p.requires_grad = True
+    # for p in model.relu.parameters():
+    #     p.requires_grad = True
 
     criterion = nn.BCEWithLogitsLoss(reduce=True, size_average=True).to(device)
     optimizer = torch.optim.Adam(filter(lambda p : p.requires_grad, model.parameters()), lr=args.lr)
@@ -143,7 +152,7 @@ def train(train_loader, model, criterion, optimizer, epoch, args, writer):
         input, target = input.to(device), target.float().to(device)
 
         # compute output
-        output = model(input, train=True)
+        output = model(input)
 
         loss = criterion(output, target)
 
@@ -177,7 +186,10 @@ def validate(val_loader, model, criterion, args):
     for i, (input, target) in enumerate(val_loader):
         input, target = input.to(device), target.float().to(device)
 
-        output = model(input, train=False)
+        output = model(input)
+
+        # print("output:",output[0])
+        # print("target:",target[0])
 
         loss = criterion(output, target)
         losses.update(loss.data, input.size(0))

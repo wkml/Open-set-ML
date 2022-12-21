@@ -1,5 +1,5 @@
 #!/bin/bash
-post='SD-CLIP_BASE-COCO-exp8.1-lr5e-4-bs64'
+post='SD-CONTRAST-COCO-exp1.0-lr5e-4-bs64'
 backbone_name='RN101'
 dataset='COCO'
 train_data_dir='/data/public/coco2014/train2014'
@@ -12,9 +12,9 @@ graph_file='./data/coco/prob_train.npy'
 word_file='./data/coco/vectors.npy'
 category_file='./data/coco/category_name.json'
 
-batch_size=16
+batch_size=64
 epochs=20
-learning_rate=1e-4
+learning_rate=5e-4
 momentum=0.9
 weight_decay=0
 num_classes=80
@@ -28,13 +28,13 @@ start_epoch=0
 #epoch number to decend lr
 step_epoch=10
 #print frequency (default: 10)
-print_freq=1000
+print_freq=100
 #path to latest checkpoint (default: none)
 #resume="model_best_vgg_pretrain_bk.pth.tar"
 #resume="backup/86.26.pth.tar"
 #evaluate mode
 cuda=0
-CUDA_VISIBLE_DEVICES=${cuda} python main_clip_base_sd.py \
+CUDA_VISIBLE_DEVICES=${cuda} python main_contrast.py \
 --dataset ${dataset} \
 --train_data ${train_data_dir} \
 --test_data ${test_data_dir} \

@@ -22,10 +22,15 @@ class CLIP_SD(nn.Module):
                                       image_feature_dim = self.image_feature_dim,
                                       word_feature_dim=self.word_feature_dim)
 
-        self.classifiers = Element_Wise_Layer(80, self.image_feature_dim)
+        self.logit_scale = self.clip_model.logit_scale
+        self.fc = nn.Linear(self.image_feature_dim, 512)
+        self.relu = nn.ReLU()
+
+        # self.classifiers = Element_Wise_Layer(80, self.image_feature_dim)
         # self.fc1 = nn.Linear(self.image_feature_dim, self.image_feature_dim)
         # self.fc2 = nn.Linear(self.image_feature_dim, 1)
         # self.relu = nn.ReLU(inplace=True)
+        
 
 
     def forward(self, image):
@@ -33,12 +38,21 @@ class CLIP_SD(nn.Module):
         text_features = self.text_features
         # SD
         sd_features = self.word_semantic(image_features, text_features)    # [bs, 80, 512]
-        output = self.classifiers(sd_features)                       # [bs, 80, 2048]
+        sd_features = self.fc(sd_features)
+        sd_features = self.relu(sd_features)
+        
+        sd_features = sd_features / sd_features.norm(dim=-1, keepdim=True)
+        text_features = text_features / text_features.norm(dim=-1, keepdim=True)
+
+        logit_scale = self.logit_scale.exp()
+        logits = logit_scale * sd_features @ text_features.t()          # [bs, 80, 80]
+
+        output = torch.diagonal(logits, dim1=-2, dim2=-1)
 
         # output = self.fc1(sd_features)
         # output = self.fc2(self.relu(output))
         
-        return output.squeeze()
+        return output
 
     def get_text_features(self, classnames):
         temp = "a photo of a {}."

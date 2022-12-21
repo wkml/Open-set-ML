@@ -1,5 +1,5 @@
 #!/bin/bash
-post='Openset_SD-exp2.0-lr1e-3-bs16'
+post='Openset_SD_contrast-exp1.0-lr5e-3-bs64'
 backbone_name='RN101'
 dataset='COCO'
 train_data_dir='/data/public/coco2014/train2014'
@@ -14,7 +14,7 @@ category_file='./data/coco/category_name.json'
 
 batch_size=64
 epochs=20
-learning_rate=1e-3
+learning_rate=5e-3
 momentum=0.9
 weight_decay=0
 num_classes=80
