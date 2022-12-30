@@ -13,14 +13,13 @@ class ZSCLIP(nn.Module):
         self.dtype = self.clip_model.dtype
 
     def forward(self, image):
-        _, image_features = self.image_encoder(image.type(self.dtype))       #[bs, 512, H, W]
+        _, image_features = self.image_encoder(image.type(self.dtype))       # [bs, 1, 512]
         text_features = self.text_features
 
         image_features = image_features / image_features.norm(dim=-1, keepdim=True)
         text_features = text_features / text_features.norm(dim=-1, keepdim=True)
 
-        logit_scale = self.logit_scale.exp()
-        logits = logit_scale * image_features @ text_features.t()
+        logits = image_features @ text_features.t()
 
         return logits
 

@@ -1,5 +1,5 @@
 #!/bin/bash
-post='SD-CONTRAST-COCO-exp1.0-lr5e-4-bs64'
+post='zsclip-exp2.0'
 backbone_name='RN101'
 dataset='COCO'
 train_data_dir='/data/public/coco2014/train2014'
@@ -12,11 +12,11 @@ graph_file='./data/coco/prob_train.npy'
 word_file='./data/coco/vectors.npy'
 category_file='./data/coco/category_name.json'
 
-batch_size=16
-epochs=20
-learning_rate=3e-4
+batch_size=64
+epochs=30
+learning_rate=0.002
+weight_decay=0.0005
 momentum=0.9
-weight_decay=0
 num_classes=80
 #input parameter
 crop_size=448
@@ -28,13 +28,16 @@ start_epoch=0
 #epoch number to decend lr
 step_epoch=10
 #print frequency (default: 10)
-print_freq=1000
+print_freq=100
+n_ctx=16
+class_token_position='end'
+
 #path to latest checkpoint (default: none)
 #resume="model_best_vgg_pretrain_bk.pth.tar"
 #resume="backup/86.26.pth.tar"
 #evaluate mode
 cuda=0
-CUDA_VISIBLE_DEVICES=${cuda} python main_contrast.py \
+CUDA_VISIBLE_DEVICES=${cuda} python zsclip.py \
 --dataset ${dataset} \
 --train_data ${train_data_dir} \
 --test_data ${test_data_dir} \
@@ -58,3 +61,6 @@ CUDA_VISIBLE_DEVICES=${cuda} python main_contrast.py \
 --print_freq ${print_freq} \
 --post ${post} \
 --backbone_name $backbone_name \
+--n_ctx ${n_ctx} \
+--class_token_position ${class_token_position} \
+--evaluate

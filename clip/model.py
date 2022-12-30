@@ -1,4 +1,5 @@
 from collections import OrderedDict
+import math
 from typing import Tuple, Union
 
 import numpy as np
@@ -64,21 +65,40 @@ class AttentionPool2d(nn.Module):
         self.num_heads = num_heads
         self.embed_dim = embed_dim
         self.spacial_dim = spacial_dim
+    
+    def interpolate_pos_encoding(self, x, w, h):  # x.shape = LBC
+        npatch = x.shape[0] - 1
+        positional_embedding_ = self.positional_embedding.unsqueeze(0)
+        N = positional_embedding_.shape[1] - 1
+        if npatch == N and w == h:
+            return positional_embedding_[0]
+        class_pos_embed = positional_embedding_[:, 0]
+        patch_pos_embed = positional_embedding_[:, 1:]
+        dim = x.shape[-1]
+        w0 = w
+        h0 = h
+        # we add a small number to avoid floating point error in the interpolation
+        # see discussion at https://github.com/facebookresearch/dino/issues/8
+        w0, h0 = w0 + 0.1, h0 + 0.1
+        patch_pos_embed = nn.functional.interpolate(
+            patch_pos_embed.reshape(1, int(math.sqrt(N)), int(math.sqrt(N)), dim).permute(0, 3, 1, 2),
+            scale_factor=(w0 / math.sqrt(N), h0 / math.sqrt(N)),
+            mode='bicubic',
+        )
+        assert int(w0) == patch_pos_embed.shape[-2] and int(h0) == patch_pos_embed.shape[-1]
+        patch_pos_embed = patch_pos_embed.permute(0, 2, 3, 1).view(1, -1, dim)
+        return torch.cat((class_pos_embed.unsqueeze(1), patch_pos_embed), dim=1)[0]
 
-    def forward(self, x):
+    def forward(self, x, if_pos=True):
         B, C, H, W = x.shape
         x = x.reshape(x.shape[0], x.shape[1], x.shape[2] * x.shape[3]).permute(2, 0, 1)  # NCHW -> (HW)NC
         # [CLS]
         x = torch.cat([x.mean(dim=0, keepdim=True), x], dim=0)  # (HW+1)NC
 
-        cls_pos = self.positional_embedding[0:1, :]
-        spatial_pos = F.interpolate(
-            self.positional_embedding[1:, ].reshape(1, self.spacial_dim, self.spacial_dim, self.embed_dim).permute(0, 3, 1, 2),
-            size=(H, W), mode='bilinear')
-        spatial_pos = spatial_pos.reshape(self.embed_dim, H * W).permute(1, 0)
-        positional_embedding = torch.cat([cls_pos, spatial_pos], dim=0)
+        if if_pos:
+            pos_embedding = self.interpolate_pos_encoding(x, H, W)
+            x = x + pos_embedding[:, None, :].to(x.dtype)
 
-        x = x + positional_embedding[:, None, :].to(x.dtype)  # (HW+1)NC
         x, _ = F.multi_head_attention_forward(
             query=x, key=x, value=x,
             embed_dim_to_check=x.shape[-1],
@@ -99,10 +119,10 @@ class AttentionPool2d(nn.Module):
             need_weights=False
         )
 
-        x = x.permute(1, 2, 0) # [B, C, H * W]
-        global_map = x[:, :, 0] # [B, C, 1]
-        feature_map = x[:, :, 1:].reshape(B, -1, H, W) # [B, C, H, W]
+        global_map = x[0]
+        feature_map = x[1:].permute(1, 0, 2)
         return feature_map, global_map
+
 
 
 class ModifiedResNet(nn.Module):
@@ -162,7 +182,6 @@ class ModifiedResNet(nn.Module):
         x = self.layer2(x)
         x = self.layer3(x)
         x = self.layer4(x)
-        x = self.global_avgpool(x)
         x = self.attnpool(x)
         return x
 

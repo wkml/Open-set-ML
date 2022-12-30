@@ -5,3 +5,4 @@ SSCLIP-withoutAttn-COCO_score
 exp
 __pycache__
 jupyter_test
+.idea
